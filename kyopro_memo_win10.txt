@@ -1,0 +1,18 @@
+
+https://atcoder.jp/contests/arc088/tasks/arc088_c (バブルソートの交換回数は転倒数．文字ごとに独立に考える．出てくる順を変えるのは損．前半半分だけが前半分にきて，位置は保存．まずその転倒数を答えに足して，それから pdf でいう A を固定 C を動かす場合に対する転倒数を計算．)
+
+https://atcoder.jp/contests/abc180/tasks/abc180_f (最小添え字規則でやる．max = L -> <=L - <=L-1．(これは本番中も考えていた) cycle[k] = path[k-1]．ループは j を M まで回さないとダメ (k=1 でパスの場合がある))
+
+https://atcoder.jp/contests/abc182/tasks/abc182_f (繰り上がりのフラグ j を nj とともにループを回して，満たすべき式から機械的に遷移する．dp は再利用．swap．どちらかが 0 であるという条件)
+
+https://atcoder.jp/contests/abc178/tasks/abc178_f (mp[値].emplace_back(index) を駆使する．実装かなり重い)
+
+https://atcoder.jp/contests/abc184/tasks/abc184_e (拡張ダイクストラは全状態を配列にしとかないと死ぬ)
+
+半分全列挙 (N <= 40 とか．https://atcoder.jp/contests/abc184/tasks/abc184_f / https://atcoder.jp/contests/tokiomarine2020/tasks/tokiomarine2020_d)
+
+https://atcoder.jp/contests/arc108/tasks/arc108_b (stack で管理．fo は 26．iwi 版が TDPC にあるらしい．)
+
+https://atcoder.jp/contests/tdpc/tasks/tdpc_semiexp (基本的に dp[i][1] は 01, 011, ... 0(K-2)*1 を足す (互いに背反) 直前の 1 の連続区間が 1 ~ K-1 の場合に分けられる．あとは初期値．ダミーの i=0 を作っておいて，dp[1][1] = 1, sum = 1 として i=2 から回す)
+
+https://atcoder.jp/contests/tdpc/tasks/tdpc_lexicographical (位置 i に対して，dp[i] は s[i] を必ず使って，それ以降の文字からできる部分列の個数を表す．nxt[i][ch] で位置の上を移動しつつ，K 番目を探す．dp 値の overflow に注意 (INF = 1e18+1 と chmin しないと WA)．現在の位置 p から nxt[p][ch] で p = nxt[p][ch]+1 (ch で確定ならば) nxt[i][j] は i 番目を含む，ch+\varepsilon の場合もあり --K など注意．)
