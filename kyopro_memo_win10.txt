@@ -16,3 +16,5 @@ https://atcoder.jp/contests/arc108/tasks/arc108_b (stack で管理．fo は 26�
 https://atcoder.jp/contests/tdpc/tasks/tdpc_semiexp (基本的に dp[i][1] は 01, 011, ... 0(K-2)*1 を足す (互いに背反) 直前の 1 の連続区間が 1 ~ K-1 の場合に分けられる．あとは初期値．ダミーの i=0 を作っておいて，dp[1][1] = 1, sum = 1 として i=2 から回す)
 
 https://atcoder.jp/contests/tdpc/tasks/tdpc_lexicographical (位置 i に対して，dp[i] は s[i] を必ず使って，それ以降の文字からできる部分列の個数を表す．nxt[i][ch] で位置の上を移動しつつ，K 番目を探す．dp 値の overflow に注意 (INF = 1e18+1 と chmin しないと WA)．現在の位置 p から nxt[p][ch] で p = nxt[p][ch]+1 (ch で確定ならば) nxt[i][j] は i 番目を含む，ch+\varepsilon の場合もあり --K など注意．)
+
+https://atcoder.jp/contests/abc207/tasks/abc207_e (メモ化しない．dp でやって，必要な情報は dp の和としてまとめておく．)
