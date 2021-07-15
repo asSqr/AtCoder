@@ -40,9 +40,6 @@ template<class T>
 std::ostream &operator<< ( std::ostream& out, const std::vector<T>& a )
 { std::cout << '['; rep( i, a.size() ){ std::cout << a[i]; if( i != a.size()-1 ) std::cout << ", "; } std::cout << ']'; return out; }
 
-<<<<<<< HEAD
-int main() {
-=======
 const ll mod = 1000000007;
 
 struct mint {
@@ -110,74 +107,28 @@ struct combination {
 };
 
 ll N;
-std::vector<ll> G[2010];
-// 0: not covered, 1: covered but not put, 2: covered and put
-using vm = std::vector<mint>;
-using vvm = std::vector<vm>;
-
-vvm dfs( ll v, ll p = -1 ) {
-  vvm dp(2, vm(3));
-  dp[0][0] = dp[1][2] = 1;
-
-  for( auto u : G[v] ) if( u != p ) {
-    auto dp_u = dfs(u, v);
-
-    ll nu = dp_u.size()-1;
-    ll nv = dp.size()-1;
-
-    vvm dp_v(nu+nv+2, vm(3));
-    std::swap(dp, dp_v);
-
-    rep( vi, nv+1 ) rep( vj, 3 ) rep( ui, nu+1 ) rep( uj, 3 ) {
-      mint prod = dp_v[vi][vj]*dp_u[ui][uj];
-
-      ll i = vi+ui, j;
-
-      if( vj == 0 && uj != 2 ) {
-        j = 0;
-      } else if( vj == 2 ) {
-        j = 2;
-      } else {
-        j = 1;
-      }
-
-      if( vj == 0 && uj == 2 ) {
-        ++i;
-      }
-      if( vj == 2 && uj == 0 ) {
-        ++i;
-      }
-
-      dp[i][j] += prod;
-    } 
-  }
-
-  return dp;
-}
+ll C[200010];
+mint dp[200010][2];
 
 int main() {
   std::cin >> N;
 
-  rep( i, N-1 ) {
-    ll u, v;
-    std::cin >> u >> v;
-    --u; --v;
+  rep( i, N )
+    std::cin >> C[i];
 
-    G[u].emplace_back(v);
-    G[v].emplace_back(u);
+  std::sort(C, C+N);
+
+  mint ans = 1;
+
+  rep( i, N ) {
+    if( !i )
+      ans *= C[i];
+    else {
+      ans *= (C[i]-C[i-1])+(C[i-1]-i);
+    }
   }
 
-  auto dp = dfs( 0 );
-
-  rep( j, N+1 ) {
-    mint ans = 0;
-
-    rep( k, 3 )
-      ans += dp[j][k];
-
-    std::cout << ans.x << endl;
-  }
->>>>>>> d1b183a7884b6d60fea5f1e5108d0c9b5fbf5bfb
+  std::cout << ans.x << endl;
 
   return 0;
 }
