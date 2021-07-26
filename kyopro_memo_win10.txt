@@ -17,4 +17,8 @@ https://atcoder.jp/contests/tdpc/tasks/tdpc_semiexp (基本的に dp[i][1] は 0
 
 https://atcoder.jp/contests/tdpc/tasks/tdpc_lexicographical (位置 i に対して，dp[i] は s[i] を必ず使って，それ以降の文字からできる部分列の個数を表す．nxt[i][ch] で位置の上を移動しつつ，K 番目を探す．dp 値の overflow に注意 (INF = 1e18+1 と chmin しないと WA)．現在の位置 p から nxt[p][ch] で p = nxt[p][ch]+1 (ch で確定ならば) nxt[i][j] は i 番目を含む，ch+\varepsilon の場合もあり --K など注意．)
 
+<<<<<<< HEAD
+https://atcoder.jp/contests/abc207/tasks/abc207_e (メモ化しない．dp でやって，必要な情報は dp の和としてまとめておく．)
+=======
 https://atcoder.jp/contests/abc207/tasks/abc207_f (木 dp．マージする dp をやるときは，返り値が dp で，子供ごとにマージ先を作り，swap する．添え字は全てループで回し，遷移先の添字を変数において条件ごとにいじり，遷移を共通化が一番バグらない．)
+>>>>>>> d1b183a7884b6d60fea5f1e5108d0c9b5fbf5bfb

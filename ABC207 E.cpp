@@ -40,11 +40,7 @@ template<class T>
 std::ostream &operator<< ( std::ostream& out, const std::vector<T>& a )
 { std::cout << '['; rep( i, a.size() ){ std::cout << a[i]; if( i != a.size()-1 ) std::cout << ", "; } std::cout << ']'; return out; }
 
-<<<<<<< HEAD
-int main() {
-=======
 const ll mod = 1000000007;
-
 struct mint {
   ll x; // typedef long long ll;
   mint(ll x=0):x((x%mod+mod)%mod){}
@@ -57,22 +53,10 @@ struct mint {
     if ((x += mod-a.x) >= mod) x -= mod;
     return *this;
   }
-  mint& operator*=(const mint a) {
-    (x *= a.x) %= mod;
-    return *this;
-  }
-  mint operator+(const mint a) const {
-    mint res(*this);
-    return res+=a;
-  }
-  mint operator-(const mint a) const {
-    mint res(*this);
-    return res-=a;
-  }
-  mint operator*(const mint a) const {
-    mint res(*this);
-    return res*=a;
-  }
+  mint& operator*=(const mint a) { (x *= a.x) %= mod; return *this;}
+  mint operator+(const mint a) const { return mint(*this) += a;}
+  mint operator-(const mint a) const { return mint(*this) -= a;}
+  mint operator*(const mint a) const { return mint(*this) *= a;}
   mint pow(ll t) const {
     if (!t) return 1;
     mint a = pow(t>>1);
@@ -82,17 +66,12 @@ struct mint {
   }
 
   // for prime mod
-  mint inv() const {
-    return pow(mod-2);
-  }
-  mint& operator/=(const mint a) {
-    return (*this) *= a.inv();
-  }
-  mint operator/(const mint a) const {
-    mint res(*this);
-    return res/=a;
-  }
+  mint inv() const { return pow(mod-2);}
+  mint& operator/=(const mint a) { return *this *= a.inv();}
+  mint operator/(const mint a) const { return mint(*this) /= a;}
 };
+std::istream& operator>>(std::istream& is, mint& a) { return is >> a.x;}
+std::ostream& operator<<(std::ostream& os, const mint& a) { return os << a.x;}
 
 struct combination {
   std::vector<mint> fact, ifact;
@@ -110,74 +89,40 @@ struct combination {
 };
 
 ll N;
-std::vector<ll> G[2010];
-// 0: not covered, 1: covered but not put, 2: covered and put
-using vm = std::vector<mint>;
-using vvm = std::vector<vm>;
-
-vvm dfs( ll v, ll p = -1 ) {
-  vvm dp(2, vm(3));
-  dp[0][0] = dp[1][2] = 1;
-
-  for( auto u : G[v] ) if( u != p ) {
-    auto dp_u = dfs(u, v);
-
-    ll nu = dp_u.size()-1;
-    ll nv = dp.size()-1;
-
-    vvm dp_v(nu+nv+2, vm(3));
-    std::swap(dp, dp_v);
-
-    rep( vi, nv+1 ) rep( vj, 3 ) rep( ui, nu+1 ) rep( uj, 3 ) {
-      mint prod = dp_v[vi][vj]*dp_u[ui][uj];
-
-      ll i = vi+ui, j;
-
-      if( vj == 0 && uj != 2 ) {
-        j = 0;
-      } else if( vj == 2 ) {
-        j = 2;
-      } else {
-        j = 1;
-      }
-
-      if( vj == 0 && uj == 2 ) {
-        ++i;
-      }
-      if( vj == 2 && uj == 0 ) {
-        ++i;
-      }
-
-      dp[i][j] += prod;
-    } 
-  }
-
-  return dp;
-}
+ll A[3010], S[3010];
+mint dp[3010][3010];
+mint sdp[3010][3010];
 
 int main() {
   std::cin >> N;
 
-  rep( i, N-1 ) {
-    ll u, v;
-    std::cin >> u >> v;
-    --u; --v;
+  rep( i, N )
+    std::cin >> A[i];
 
-    G[u].emplace_back(v);
-    G[v].emplace_back(u);
+  dp[0][0] = 1;
+  sdp[0][1] = 1;
+
+  rep( i, N ) {
+    S[i+1] = S[i]+A[i];
+    
+    repd( j, N ) {
+      ll nj = j+1;
+
+      dp[i+1][nj] += sdp[S[i+1]%nj][nj];
+
+      sdp[S[i+1]%(nj+1)][nj+1] += dp[i+1][nj];
+    }
   }
 
-  auto dp = dfs( 0 );
+  //rep( i, N+1 ) rep( j, N+1 )
+    //printf( "dp[%lld][%lld] = %lld\n", i, j, dp[i][j].x );
 
-  rep( j, N+1 ) {
-    mint ans = 0;
+  mint ans = 0;
 
-    rep( k, 3 )
-      ans += dp[j][k];
+  repi( j, 1, N+1 )
+    ans += dp[N][j];
 
-    std::cout << ans.x << endl;
-  }
->>>>>>> d1b183a7884b6d60fea5f1e5108d0c9b5fbf5bfb
+  std::cout << ans << endl;
 
   return 0;
 }
