@@ -14,6 +14,7 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include <atcoder/all>
 #define repi(i,a,b) for(ll i=(a);i<(b);++i)
 #define rep(i,a) repi(i,0,a)
 #define repdi(i,a,b) for(ll i=(a)-1;i>=(b);--i)
@@ -40,7 +41,26 @@ template<class T>
 std::ostream &operator<< ( std::ostream& out, const std::vector<T>& a )
 { std::cout << '['; rep( i, a.size() ){ std::cout << a[i]; if( i != a.size()-1 ) std::cout << ", "; } std::cout << ']'; return out; }
 
+ll N, M, Q;
+
 int main() {
+    std::cin >> N >> M >> Q;
+
+    rep( q, Q ) {
+        ll t;
+        std::cin >> t;
+
+        if( t == 1 ) {
+            ll l, r, x;
+            std::cin >> l >> r >> x;
+        } else if( t == 2 ) {
+            ll i, x;
+            std::cin >> i >> x;
+        } else if( t == 3 ) {
+            ll i, j;
+            std::cin >> i >> j;
+        }
+    }
 
     return 0;
 }
