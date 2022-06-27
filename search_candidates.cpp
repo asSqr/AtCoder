@@ -201,7 +201,7 @@ Candidates dfs1( int v, int p = -1, const std::string &acc = "" ) {
     for (int i = 0; i < 26; ++i ) {
         int node = trie.nodes[v].next[i];
 
-        if( node == p )
+        if (node == p)
             continue;
         if (node < 0)
             continue;
@@ -227,7 +227,7 @@ void dfs2( int v, int p = -1, const std::string &acc = "" ) {
     for (int i = 0; i < 26; ++i ) {
         int node = trie.nodes[v].next[i];
 
-        if( node == p )
+        if (node == p)
             continue;
         if (node < 0)
             continue;
@@ -240,6 +240,7 @@ void dfs2( int v, int p = -1, const std::string &acc = "" ) {
     return;
 }
 
+// これを feeder で実行すれば良い
 int main(int argc, char* argv[]) {
     bool verbose = false;
 
@@ -261,9 +262,9 @@ int main(int argc, char* argv[]) {
 
     std::cout << "candidates constructed" << endl;
 
-    // ↑ までの計算を feeder でする
+    // ↑ までデータ集計
 
-    // Redis 用データ集計: RedisMap redisMap
+    // Redis に永続化: RedisMap redisMap
     dfs2(0);
 
     std::cout << "redis data constructed" << endl;
