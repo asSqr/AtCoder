@@ -14,7 +14,6 @@
 #include <string>
 #include <tuple>
 #include <vector>
-#include <atcoder/all>
 #define repi(i,a,b) for(ll i=(a);i<(b);++i)
 #define rep(i,a) repi(i,0,a)
 #define repdi(i,a,b) for(ll i=(a)-1;i>=(b);--i)
@@ -29,7 +28,6 @@ using ll = long long;
 using P = std::pair<ll, ll>;
 
 constexpr ll INF = 1ll<<60;
-constexpr ll mod = 998244353;
 
 template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return 1; } return 0; }
 template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return 1; } return 0; }
@@ -42,7 +40,38 @@ template<class T>
 std::ostream &operator<< ( std::ostream& out, const std::vector<T>& a )
 { std::cout << '['; rep( i, a.size() ){ std::cout << a[i]; if( i != a.size()-1 ) std::cout << ", "; } std::cout << ']'; return out; }
 
-using mint = atcoder::modint998244353;
+const ll mod = 998244353;
+struct mint {
+  ll x; // typedef long long ll;
+  mint(ll x=0):x((x%mod+mod)%mod){}
+  mint operator-() const { return mint(-x);}
+  mint& operator+=(const mint a) {
+    if ((x += a.x) >= mod) x -= mod;
+    return *this;
+  }
+  mint& operator-=(const mint a) {
+    if ((x += mod-a.x) >= mod) x -= mod;
+    return *this;
+  }
+  mint& operator*=(const mint a) { (x *= a.x) %= mod; return *this;}
+  mint operator+(const mint a) const { return mint(*this) += a;}
+  mint operator-(const mint a) const { return mint(*this) -= a;}
+  mint operator*(const mint a) const { return mint(*this) *= a;}
+  mint pow(ll t) const {
+    if (!t) return 1;
+    mint a = pow(t>>1);
+    a *= a;
+    if (t&1) a *= *this;
+    return a;
+  }
+
+  // for prime mod
+  mint inv() const { return pow(mod-2);}
+  mint& operator/=(const mint a) { return *this *= a.inv();}
+  mint operator/(const mint a) const { return mint(*this) /= a;}
+};
+std::istream& operator>>(std::istream& is, mint& a) { return is >> a.x;}
+std::ostream& operator<<(std::ostream& os, const mint& a) { return os << a.x;}
 
 struct combination {
   std::vector<mint> fact, ifact;
@@ -61,32 +90,30 @@ struct combination {
 
 ll R, G, B, K;
 combination comb(10000010);
-std::vector<mint> r, g;
 
 int main() {
     std::cin >> R >> G >> B >> K;
 
     mint ans = 0;
 
-    rep( i, R+1 ) {
-        ll rm = R-i;
+    R -= K;
+    G -= K;
+    ll X = K;
+
+    rep( Y, std::min(R, G)+1 ) {
+        R -= Y;
+        G -= Y;
         
-        r.emplace_back(comb(rm-1, K-1) * comb.ifact[i]);
+        mint tmp = comb(R+G+B+X+Y, X+Y) * comb(R+G+B, R) * comb(G+B, G) * comb(X+Y, X);
+        tmp *= (Y&1 ? -1 : 1);
+
+        ans += tmp;
+
+        R += Y;
+        G += Y;
     }
 
-    rep( i, G+1 ) {
-        ll gm = G-i;
-        
-        g.emplace_back(comb(gm-1, K-1) * comb.ifact[i]);
-    }
-
-    auto res = atcoder::convolution(r, g);
-
-    rep( i, res.size() ) {
-        ans += res[i] * comb(i+K+B, B) * ;
-    }
-
-    std::cout << ans.val() << endl;
+    std::cout << ans << endl;
 
     return 0;
 }
