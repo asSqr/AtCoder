@@ -1,0 +1,45 @@
+{
+	// Place your snippets for cpp here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"skeleton": {
+		"prefix": "skeleton",
+		"body": "#include <cstdio>\n#include <cstdlib>\n#include <cstring>\n#include <cmath>\n#include <cassert>\n#include <algorithm>\n#include <functional>\n#include <iostream>\n#include <map>\n#include <numeric>\n#include <queue>\n#include <set>\n#include <stack>\n#include <string>\n#include <tuple>\n#include <vector>\n#define repi(i,a,b) for(ll i=(a);i<(b);++i)\n#define rep(i,a) repi(i,0,a)\n#define repdi(i,a,b) for(ll i=(a)-1;i>=(b);--i)\n#define repd(i,a) repdi(i,a,0)\n#define itr(it,a) for( auto it = (a).begin(); it != (a).end(); ++it )\n#define all(a) (a).begin(), (a).end()\n#define rall(a) (a).rbegin(), (a).rend()\n#define endl '\\n'\n#define debug(x) std::cerr << #x << \" = \" << (x) << endl;\n\nusing ll = long long;\nusing P = std::pair<ll, ll>;\n\nconstexpr ll INF = 1ll<<60;\n\ntemplate<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return 1; } return 0; }\ntemplate<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return 1; } return 0; }\n\ntemplate<class S, class T>\nstd::ostream& operator<< ( std::ostream& out, const std::pair<S,T>& a )\n{ std::cout << '(' << a.first << \", \" << a.second << ')'; return out; }\n\ntemplate<class T>\nstd::ostream &operator<< ( std::ostream& out, const std::vector<T>& a )\n{ std::cout << '['; rep( i, a.size() ){ std::cout << a[i]; if( i != a.size()-1 ) std::cout << \", \"; } std::cout << ']'; return out; }\n\nint main() {\n\n    return 0;\n}",
+		"description": "skeleton"
+	},
+	"mint": {
+		"prefix": "mint",
+		"body": "const ll mod = 1000000007;\nstruct mint {\n  ll x; // typedef long long ll;\n  mint(ll x=0):x((x%mod+mod)%mod){}\n  mint operator-() const { return mint(-x);}\n  mint& operator+=(const mint a) {\n    if ((x += a.x) >= mod) x -= mod;\n    return *this;\n  }\n  mint& operator-=(const mint a) {\n    if ((x += mod-a.x) >= mod) x -= mod;\n    return *this;\n  }\n  mint& operator*=(const mint a) { (x *= a.x) %= mod; return *this;}\n  mint operator+(const mint a) const { return mint(*this) += a;}\n  mint operator-(const mint a) const { return mint(*this) -= a;}\n  mint operator*(const mint a) const { return mint(*this) *= a;}\n  mint pow(ll t) const {\n    if (!t) return 1;\n    mint a = pow(t>>1);\n    a *= a;\n    if (t&1) a *= *this;\n    return a;\n  }\n\n  // for prime mod\n  mint inv() const { return pow(mod-2);}\n  mint& operator/=(const mint a) { return *this *= a.inv();}\n  mint operator/(const mint a) const { return mint(*this) /= a;}\n};\nstd::istream& operator>>(std::istream& is, mint& a) { return is >> a.x;}\nstd::ostream& operator<<(std::ostream& os, const mint& a) { return os << a.x;}\n\nstruct combination {\n  std::vector<mint> fact, ifact;\n  combination(int n):fact(n+1),ifact(n+1) {\n    assert(n < mod);\n    fact[0] = 1;\n    for (int i = 1; i <= n; ++i) fact[i] = fact[i-1]*i;\n    ifact[n] = fact[n].inv();\n    for (int i = n; i >= 1; --i) ifact[i-1] = ifact[i]*i;\n  }\n  mint operator()(int n, int k) {\n    if (k < 0 || k > n) return 0;\n    return fact[n]*ifact[k]*ifact[n-k];\n  }\n};",
+		"description": "mint"
+	},
+	"uf": {
+		"prefix": "uf",
+		"body": "struct UnionFind {\n  std::vector<int> d;\n  UnionFind(int n=0): d(n,-1) {}\n  int find(int x) {\n    if (d[x] < 0) return x;\n    return d[x] = find(d[x]);\n  }\n  bool unite(int x, int y) {\n    x = find(x); y = find(y);\n    if (x == y) return false;\n    if (d[x] > d[y]) std::swap(x,y);\n    d[x] += d[y];\n    d[y] = x;\n    return true;\n  }\n  bool same(int x, int y) { return find(x) == find(y);}\n  int size(int x) { return -d[find(x)];}\n};",
+		"description": "Union Find"
+	},
+	"prime_factor": {
+		"prefix": "prime_factor",
+		"body": "std::map<ll, ll> prime_factor( ll n ) {\n  std::map<ll, ll> ret;\n\n  for( ll i = 2; i*i <= n; ++i ) {\n    while( n % i == 0 ) {\n      n /= i;\n      ++ret[i];\n    }\n  }\n\n  if( n != 1 )\n    ++ret[n];\n\n  return ret;\n}",
+		"description": "prime factorization"
+	},
+	"divisors": {
+		"prefix": "divisors",
+		"body": "std::vector<ll> divisors(ll x) {\n    std::vector<ll> ret;\n\n    for (ll i = 1; i*i <= x; ++i) {\n        if (x%i == 0) {\n            ret.emplace_back(i);\n\n            if (i != x/i) {\n                ret.emplace_back(x/i);\n            }\n        }\n    }\n\n    return ret;\n}",
+		"description": "divisors"
+	},
+	"dijkstra": {
+		"prefix": "dijktra",
+		"body": "void dijkstra( ll s, std::vector<std::vector<P>> &G, std::vector<ll> &dist ) {\n    std::priority_queue<P, std::vector<P>, std::greater<P>> pque;\n    ll N = G.size();\n\n    rep( t, N )\n        dist[t] = INF;\n\n    dist[s] = 0;\n\n    pque.emplace( 0, s );\n\n    while( !pque.empty() ) {\n        P p = pque.top(); pque.pop();\n        ll d = p.first, v = p.second;\n\n        if( d > dist[v] )\n        continue;\n\n        for( auto u : G[v] ) {\n        if( chmin( dist[u.first], d + u.second ) )\n            pque.emplace( dist[u.first], u.first );\n        }\n    }\n\n    return;\n}",
+		"description": "dijkstra"
+	}
+}
